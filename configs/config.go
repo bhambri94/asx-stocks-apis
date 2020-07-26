@@ -1,0 +1,36 @@
+package configs
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+)
+
+type Configs struct {
+	SpreadsheetId             string `json:"SpreadsheetId"`
+	MarketStackAPIPath        string `json:"MarketStackApiPath"`
+	HistoryMarketStackApiPath string `json:"HistoryMarketStackApiPath"`
+	MarketStackAPIAccessToken string `json:"MarketStackApiAccessToken"`
+	ReadSymbolCodeFrom        string `json:"ReadSymbolCodeFrom"`
+	ReadHistorySheetDetails   string `json:"ReadHistorySheetDetails"`
+}
+
+var (
+	Configurations = Configs{}
+)
+
+func SetConfig() {
+	input, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		log.Fatalf("Unable to read client secret file: %v", err)
+	}
+	error := json.Unmarshal(input, &Configurations)
+	if error != nil {
+		fmt.Println("Config file is missing in root directory")
+		panic(error)
+	} else {
+		fmt.Println("Follwing values has been picked from config values:")
+		fmt.Println(Configurations)
+	}
+}

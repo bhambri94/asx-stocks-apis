@@ -1,0 +1,5 @@
+{
+    "SpreadsheetId" : "1t62WFJ8lJJ_txlsK504Fi7Z9fxHOemBBywBYNTzJvDQ",
+    "ReadSymbolCodeFrom":"DailyAlerts!A3:C74",
+    "ReadHistorySheetDetails":"LatestData!B1:FB159"
+}
