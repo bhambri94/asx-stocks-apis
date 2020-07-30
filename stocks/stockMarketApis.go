@@ -2,6 +2,7 @@ package stocks
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -43,6 +44,29 @@ type ASXData struct {
 	DeprecatedMarketCap         int     `json:"deprecated_market_cap"`
 	DeprecatedNumberOfShares    int     `json:"deprecated_number_of_shares"`
 	Suspended                   bool    `json:"suspended"`
+}
+
+type YahooData struct {
+	Prices []struct {
+		Num0 struct {
+			Date     int     `json:"date"`
+			Open     float64 `json:"open"`
+			High     float64 `json:"high"`
+			Low      float64 `json:"low"`
+			Close    float64 `json:"close"`
+			Volume   int     `json:"volume"`
+			Adjclose float64 `json:"adjclose"`
+		} `json:"0,omitempty"`
+		Num1 struct {
+			Date     int     `json:"date"`
+			Open     float64 `json:"open"`
+			High     float64 `json:"high"`
+			Low      float64 `json:"low"`
+			Close    float64 `json:"close"`
+			Volume   int     `json:"volume"`
+			Adjclose float64 `json:"adjclose"`
+		} `json:"1,omitempty"`
+	} `json:"prices"`
 }
 
 func GetLatestData(symbols [][]string) [][]interface{} {
@@ -115,5 +139,55 @@ func GenerateFinalDailyAlertsSheet(symbols [][]string) [][]interface{} {
 		row = append(row, ClosePriceMap[symbols[i][2]])
 		values = append(values, row)
 	}
+	return values
+}
+
+func GetHistoryData(symbols [][]string) [][]interface{} {
+	// i := 0
+	// for i <= 1 {
+	// 	url := "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-historical-data?frequency=1d&filter=history&period1=1586205431&period2=1596141431&symbol=" + symbols[i][2] + ".AX"
+
+	// 	req, _ := http.NewRequest("GET", url, nil)
+
+	// 	req.Header.Add("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+	// 	req.Header.Add("x-rapidapi-key", "c39f558a71msh3e3e3309afb685dp16544djsnd0d85557e9dc")
+
+	// 	resp, _ := http.DefaultClient.Do(req)
+
+	// 	defer resp.Body.Close()
+
+	// 	body, err := ioutil.ReadAll(resp.Body)
+	// 	if err != nil {
+	// 		log.Fatal(err.Error())
+	// 	}
+	// 	var ASXLatestData YahooData
+	// 	json.Unmarshal(body, &ASXLatestData)
+	// 	fmt.Println(ASXLatestData)
+
+	// 	// ineedamap := make(map[string]interface{})
+	// 	// ineedamap[symbols[i][2]] = ASXLatestData.Prices
+	// 	// ineedamap[]
+	// 	// for j := range ASXLatestData.Prices {
+	// 	// 	i, err := strconv.ParseInt(strconv.Itoa(ASXLatestData.Prices[j].Num0.Date), 10, 64)
+	// 	// 	if err != nil {
+	// 	// 		panic(err)
+	// 	// 	}
+	// 	// 	tm := time.Unix(i, 0)
+	// 	// 	OpenPriceMap[ASXLatestData.Data[j].Symbol+tm.Day()] = ASXLatestData.Data[j].Open
+	// 	// 	ClosePriceMap[ASXLatestData.Data[j].Symbol+DaymonthDate] = ASXLatestData.Data[j].Close
+	// 	// 	fmt.Println(ASXLatestData.Data[j].Symbol + DaymonthDate)
+	// 	// 	j++
+	// 	// }
+	// 	break
+	// }
+
+	var values [][]interface{}
+	var row []interface{}
+	for i := range symbols {
+		row = append(row, symbols[i][0], symbols[i][2])
+	}
+	values = append(values, row)
+
+	fmt.Println(values)
 	return values
 }

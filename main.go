@@ -10,8 +10,11 @@ import (
 
 func main() {
 	config.SetConfig()
-	GetLatestMarketData()
-	DailyAlerts()
+	// GetLatestMarketData()
+	// DailyAlerts()
+	// HistorySheetData := sheets.BatchGet("Sheet9!B2:D81")
+	// values:=stocks.GetHistoryData(HistorySheetData)
+	// sheets.BatchWrite("TestMe!E159", values)
 }
 
 func GetLatestMarketData() {
