@@ -1,5 +1,7 @@
 ### asx-stocks-apis
 
+This utliity is used to get a daily report for EOD Australian exchange stocks with details like Open, Close and also couple of formulas which tells us whether to buy or sell at current market price. This utility fetches the latest report daily using cronjob at end of day.
+
 Setup
 
 ```
