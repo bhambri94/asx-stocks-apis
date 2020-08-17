@@ -2,9 +2,11 @@ package stocks
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 var (
@@ -73,8 +75,8 @@ func GetLatestData(symbols [][]string) [][]interface{} {
 	}
 
 	var values [][]interface{}
-	firstHeader := true
-	secondHeader := false
+	firstHeader := false
+	secondHeader := true
 
 	for i := range symbols {
 		var row []interface{}
@@ -89,14 +91,20 @@ func GetLatestData(symbols [][]string) [][]interface{} {
 			}
 		}
 		if firstHeader {
-			row = append(row, LatestTradeData[6:10], LatestTradeData[6:10])
+			newDate := LatestTradeData[5:7] + "-" + LatestTradeData[8:10] + "-" + LatestTradeData[0:4]
+			t, err := time.Parse("01-02-2006", newDate)
+			if err != nil {
+				panic(err)
+			}
+			week := t.Weekday().String()
+			row = append(row, week[0:3]+LatestTradeData[5:7]+"-"+LatestTradeData[8:10]+"-"+LatestTradeData[0:4], LatestTradeData[5:7]+"-"+LatestTradeData[8:10]+"-"+LatestTradeData[0:4])
 			firstHeader = false
 			secondHeader = true
 		} else if secondHeader {
 			row = append(row, "O", "C")
 			secondHeader = false
 		} else {
-			row = append(row, OpenPriceMap[symbols[i][2]], ClosePriceMap[symbols[i][2]])
+			row = append(row, fmt.Sprintf("%.3f", OpenPriceMap[symbols[i][2]]), fmt.Sprintf("%.3f", ClosePriceMap[symbols[i][2]]))
 
 		}
 		values = append(values, row)
