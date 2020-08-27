@@ -112,16 +112,19 @@ func GetLatestData(symbols [][]string) [][]interface{} {
 	return values
 }
 
-func GenerateFinalDailyAlertsSheet(symbols [][]string) [][]interface{} {
-	var values [][]interface{}
+func GenerateFinalDailyAlertsSheet(symbols [][]string) ([][]interface{}, [][]interface{}) {
+	var symbolValues [][]interface{}
+	var closePriceValues [][]interface{}
 
 	for i := range symbols {
-		var row []interface{}
+		var row1 []interface{}
+		var row2 []interface{}
 		for j := range symbols[i] {
-			row = append(row, symbols[i][j])
+			row1 = append(row1, symbols[i][j])
 		}
-		row = append(row, ClosePriceMap[symbols[i][2]])
-		values = append(values, row)
+		row2 = append(row2, ClosePriceMap[symbols[i][2]])
+		closePriceValues = append(closePriceValues, row2)
+		symbolValues = append(symbolValues, row1)
 	}
-	return values
+	return symbolValues, closePriceValues
 }

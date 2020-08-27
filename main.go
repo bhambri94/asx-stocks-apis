@@ -22,9 +22,11 @@ func GetLatestMarketData() {
 
 func DailyAlerts() {
 	dailyAlertsData := sheets.BatchGet(config.Configurations.ReadSymbolCodeFrom)
-	values := stocks.GenerateFinalDailyAlertsSheet(dailyAlertsData)
+	symbolValues, closePriceValues := stocks.GenerateFinalDailyAlertsSheet(dailyAlertsData)
 	SheetName := "DailyAlerts" + "!A3"
-	sheets.BatchWrite(SheetName, values)
+	sheets.BatchWrite(SheetName, symbolValues)
+	SheetName = "DailyAlerts" + "!G3"
+	sheets.BatchWrite(SheetName, closePriceValues)
 }
 
 func GetHistoryData() {
